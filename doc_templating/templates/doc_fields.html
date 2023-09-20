@@ -1,0 +1,55 @@
+{% extends "shared/_layout.html" %}
+{% block main_content %}
+
+<!--suppress XmlDuplicatedId -->
+<form action="/refresh" method="GET" id="refresh_form"></form>
+
+<form action="/fill" method="POST" id="client_form">
+    <div class="row is-vertical-align">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <select name="client_idx" id="client_idx">
+                {% for client in clients %}
+                <option {% if client.selected %}selected="selected" {% endif %} value="{{ client.idx }}">{{ client.name
+                    }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3">
+            <button class="button primary" type="submit">Wypełnij pola</button>
+            <button class="button error" type="submit" form="refresh_form">Odśwież</button>
+        </div>
+    </div>
+</form>
+
+
+<form action="/submit" method="POST">
+
+    {% for full_text, field in field_keys.items() %}
+
+    <div class="row is-vertical-align">
+        <div class="col-3 text-right"><label for="{{ field.full_text }}">{{ field.key }}</label></div>
+        <div class="col-9">
+            {% if field.typ == 'checkbox' %}
+            <input type="checkbox" class="" id="{{ field.full_text }}" name="{{ field.full_text }}"
+                   value="{{ field.default_value }}"/>
+            {% elif field.typ == 'long' %}
+            <textarea id="{{ field.full_text }}" name="{{ field.full_text }}" rows="5" cols="30" required>{{ field.default_value }}</textarea>
+            {% else %}
+            <input type="{{ field.typ }}"
+                   class="" id="{{ field.full_text }}" name="{{ field.full_text }}"
+                   value="{{ field.default_value }}" required/>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row is-center">
+        <button class="button primary" type="submit">Wygeneruj umowę</button>
+    </div>
+
+</form>
+
+
+{% endblock %}

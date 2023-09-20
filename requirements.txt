@@ -1,0 +1,7 @@
+python-docx
+python-multipart
+fastapi
+jinja2
+confuse
+pandas
+openpyxl
