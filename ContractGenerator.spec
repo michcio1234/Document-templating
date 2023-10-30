@@ -1,29 +1,27 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_submodules
+from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 
 hiddenimports = []
-hiddenimports += collect_submodules('doc_templating')
 
-
-block_cipher = None
-
+datas = [
+    ("doc_templating/static", "doc_templating/static"),
+    ("doc_templating/templates", "doc_templating/templates"),
+    ("doc_templating/config_default.yaml", "doc_templating"),
+]
 
 a = Analysis(
-    ['doc_templating/ContractGenerator.py'],
+    ['doc_templating\\ContractGenerator.py'],
     pathex=['doc_templating'],
     binaries=[],
-    datas=[('doc_templating/templates', 'doc_templating/templates')],
+    datas=datas,
     hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
     noarchive=False,
 )
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
@@ -45,7 +43,6 @@ exe = EXE(
 coll = COLLECT(
     exe,
     a.binaries,
-    a.zipfiles,
     a.datas,
     strip=False,
     upx=True,
