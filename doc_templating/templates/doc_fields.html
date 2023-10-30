@@ -30,18 +30,28 @@
 
     <div class="row is-vertical-align">
         <div class="col-3 text-right"><label for="{{ field.full_text }}">{{ field.key }}</label></div>
+        {% if field.typ == 'checkbox' %}
         <div class="col-9">
-            {% if field.typ == 'checkbox' %}
             <input type="checkbox" class="" id="{{ field.full_text }}" name="{{ field.full_text }}"
                    value="{{ field.default_value }}"/>
-            {% elif field.typ == 'long' %}
+        </div>
+        {% elif field.typ == 'long' %}
+        <div class="col-9">
             <textarea id="{{ field.full_text }}" name="{{ field.full_text }}" rows="5" cols="30" required>{{ field.default_value }}</textarea>
-            {% else %}
+        </div>
+        {% elif field.typ in ['date', 'number'] %}
+        <div class="col-3">
+            <input type="{{ field.typ }}"
+                class="" id="{{ field.full_text }}" name="{{ field.full_text }}"
+                value="{{ field.default_value }}" required/>
+        </div>
+        {% else %}
+        <div class="col-9">
             <input type="{{ field.typ }}"
                    class="" id="{{ field.full_text }}" name="{{ field.full_text }}"
                    value="{{ field.default_value }}" required/>
-            {% endif %}
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 
